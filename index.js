@@ -9,7 +9,7 @@ let
   users = [],
   connections = [];
 
-server.listen(3000)
+server.listen(process.env.PORT || 3000)
 console.log('Connected to Server')
 
 app.use(express.static(__dirname + '/public'));
