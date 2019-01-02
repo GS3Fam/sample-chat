@@ -69,7 +69,7 @@
 
       $(`#messageForm`).submit(function(e){
         e.preventDefault();
-        socket.emit('mess:send', message.val())
+        socket.emit('mess:send', message.val().replace(/</g, "&lt;").replace(/>/g, "&gt;"))
         message.val('')
       })
 
@@ -79,7 +79,7 @@
 
       $(`#userForm`).submit(function(e){
         e.preventDefault();
-        socket.emit('user:new', username.val())
+        socket.emit('user:new', username.val().replace(/</g, "&lt;").replace(/>/g, "&gt;"))
 
         $(`#userFormArea`).attr('hidden','hidden')
         $(`#messageArea`).removeAttr('hidden')
