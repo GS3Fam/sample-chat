@@ -53,10 +53,6 @@ body {
   max-height: calc(100vh - 50px);
   overflow-y: auto;
 }
-/* #messageArea #users {
-  height: calc(100% - 35px);
-  overflow-y: auto;
-} */
 
 #messageArea > div:nth-child(2) {
   width: calc(100% - (var(--messageArea-user-width) + 10px));
@@ -75,4 +71,14 @@ body {
 #messageArea #chat {
   overflow-y: auto;
   height: calc(100% - 170px);
+}
+
+@media (max-width: 576px){
+  #messageArea > div{
+    width: 100% !important;
+    margin-right: 0px !important;
+  }
+  #messageArea > div:nth-child(1){
+    margin-bottom: 10px;
+  }
 }
