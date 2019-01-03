@@ -83,7 +83,7 @@
           return temp;
         },'')
         chat.append(`<p class="fs-09em mb-2"><span class="fw-600">${data.user} : </span>${chat_mess}</p>`)
-        chat.scrollTop(chat.height())
+        chat.scrollTop(chat[0].scrollHeight)
       })
 
       // user login

@@ -40,16 +40,23 @@ body {
   margin-bottom: 25px;
 }
 #messageArea > div > div {
-  background: white;
+  background: rgba(255,255,255,.9);
   padding: 15px;
   position: relative;
-
 }
 
 #messageArea > div:nth-child(1) {
   width: var(--messageArea-user-width);
   margin-right: 10px;
 }
+#messageArea > div:nth-child(1) > div {
+  max-height: calc(100vh - 50px);
+  overflow-y: auto;
+}
+/* #messageArea #users {
+  height: calc(100% - 35px);
+  overflow-y: auto;
+} */
 
 #messageArea > div:nth-child(2) {
   width: calc(100% - (var(--messageArea-user-width) + 10px));
