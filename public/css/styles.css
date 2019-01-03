@@ -60,17 +60,29 @@ body {
 #messageArea > div:nth-child(2) > div {
   height: calc(100vh - 50px);
 }
-#messageArea #messageForm {
+
+#chat {
+  overflow-y: auto;
+  height: calc(100% - 195px);
+}
+#messageForm {
   position: absolute;
   bottom: 15px;
   width: calc(100% - 30px);
 }
-#messageArea #messageForm textarea{
+#messageForm textarea{
   margin-bottom: 12px;
+  resize: none;
 }
-#messageArea #chat {
-  overflow-y: auto;
-  height: calc(100% - 170px);
+#emojis {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+#emojis > e {
+  font-size: 1.2em;
+  margin-right: 5px;
+  cursor: pointer;
+  user-select: none;
 }
 
 @media (max-width: 576px){

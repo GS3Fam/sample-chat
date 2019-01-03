@@ -29,26 +29,19 @@
 
     <div class="row" id="messageArea" hidden>
       <div class="fl-l">
-        <div>
-          <!-- <p class="fs-1_2em mb-1">Users</p> -->
-
-          <div id="users"></div>
-        </div>
+        <div id="users"></div>
       </div>
 
       <div class="fl-r">
         <div>
-
-          <!-- <p class="fs-1_2em mb-2">Chat</p> -->
 
           <div id="chat">
             <p class="fs-08em text-muted mb-2"><em>Welcome to the chat room. </em></p>
           </div>
 
           <form id="messageForm">
-            <div class="form-group mb-0">
-              <textarea class="form-control" rows="4" id="message" placeholder="Enter Message"></textarea>
-            </div>
+            <div id="emojis" class="mb-1"></div>
+            <textarea class="form-control" rows="4" id="message" placeholder="Enter Message"></textarea>
             <input type="submit" class="btn btn-sm btn-custom-primary fl-r" value="Submit">
           </form>
 
@@ -61,13 +54,15 @@
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="js/emojis.js"></script>
   <script type="text/javascript">
     $(() => {
       let
         socket = io.connect(),
-        username = $(`#username`)
+        username = $(`#username`),
         message = $(`#message`),
-        chat = $(`#chat`)
+        chat = $(`#chat`),
+        users = $(`#users`)
 
       // message submit
       $(`#messageForm`).submit(function(e) {
@@ -93,13 +88,16 @@
 
         $(`#userFormArea`).attr('hidden', 'hidden')
         $(`#messageArea`).removeAttr('hidden')
+
+        chat.css('height', `calc(100% - ${$(`#messageForm`).height()+10}px)`)
+        console.log($(`#messageForm`).height())
       })
 
       // users area update
       socket.on('user:get', function(data) {
-        $('#users').html('')
+        users.html('')
         data.forEach((user) => {
-          $('#users').append(`<p class="fs-09em mb-1">${user}</p>`)
+          users.append(`<p class="fs-09em mb-1">${user}</p>`)
         })
       })
 
@@ -111,6 +109,12 @@
           }
         }
       })
+
+      $(`#emojis > e`).click(function(){
+        message.val(message.val() + $(this).text())
+      })
+
+
 
     })
   </script>
