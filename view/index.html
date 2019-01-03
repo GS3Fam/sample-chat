@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
   <link rel="stylesheet" type='text/css' href="css/general.css">
   <link rel="stylesheet" type='text/css' href="css/styles.css">
 </head>
+
 <body>
   <div class="container" id="main-container">
 
@@ -17,7 +19,7 @@
       <form id="userForm">
         <div class="form-group mb-2">
           <label class="text-white" for="">Enter Username</label>
-          <input class="form-control" id="username" type="text" required/>
+          <input class="form-control" id="username" type="text" required />
         </div>
         <input type="submit" class="btn btn-sm btn-custom-primary" value="Log in">
 
@@ -59,7 +61,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript">
-    $(()=>{
+    $(() => {
       let
         socket = io.connect(),
         username = $(`#username`)
@@ -67,36 +69,50 @@
         chat = $(`#chat`)
 
       // message submit
-      $(`#messageForm`).submit(function(e){
+      $(`#messageForm`).submit(function(e) {
         e.preventDefault();
-        socket.emit('mess:send', message.val().replace(/</g, "&lt;").replace(/>/g, "&gt;"))
+        socket.emit('mess:send', message.val().split("\n"))
         message.val('')
       })
 
       // chat area update
-      socket.on('mess:new', function(data){
-        chat.append(`<p class="fs-09em mb-2"><span class="fw-600">${data.user} : </span>${data.msg}</p>`)
+      socket.on('mess:new', function(data) {
+        let chat_mess = data.msg.reduce((temp, mess, i)=>{
+          temp += i != data.msg.length-1 ? `${mess}<br>` : `${mess}`;
+          return temp;
+        },'')
+        chat.append(`<p class="fs-09em mb-2"><span class="fw-600">${data.user} : </span>${chat_mess}</p>`)
         chat.scrollTop(chat.height())
       })
 
       // user login
-      $(`#userForm`).submit(function(e){
+      $(`#userForm`).submit(function(e) {
         e.preventDefault();
         socket.emit('user:new', username.val().replace(/</g, "&lt;").replace(/>/g, "&gt;"))
 
-        $(`#userFormArea`).attr('hidden','hidden')
+        $(`#userFormArea`).attr('hidden', 'hidden')
         $(`#messageArea`).removeAttr('hidden')
       })
 
       // users area update
-      socket.on('user:get', function(data){
+      socket.on('user:get', function(data) {
         $('#users').html('')
-        data.forEach((user)=>{
+        data.forEach((user) => {
           $('#users').append(`<p class="fs-09em mb-1">${user}</p>`)
         })
+      })
+
+      message.keyup(function(e) {
+        if (e.keyCode == 13) {
+          if (!e.shiftKey){
+            message.val(message.val().slice(0,message.val().length-1).replace(/</g, "&lt;").replace(/>/g, "&gt;"))
+            $(`#messageForm`).submit();
+          }
+        }
       })
 
     })
   </script>
 </body>
+
 </html>
