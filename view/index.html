@@ -11,12 +11,12 @@
   <link rel="stylesheet" type='text/css' href="css/styles.css">
 </head>
 <body>
-  <div class="container my-3 py-3" id="main-container">
+  <div class="container" id="main-container">
 
     <div id="userFormArea">
       <form id="userForm">
         <div class="form-group mb-2">
-          <label for="">Enter Username</label>
+          <label class="text-white" for="">Enter Username</label>
           <input class="form-control" id="username" type="text" required/>
         </div>
         <input type="submit" class="btn btn-sm btn-custom-primary" value="Log in">
@@ -25,33 +25,32 @@
     </div>
 
     <div class="row" id="messageArea" hidden>
-      <div class="col col-3">
+      <div class="fl-l">
         <div>
-          <p class="fs-1_2em">Users</p>
+          <p class="fs-1_2em mb-1">Users</p>
 
-          <!-- user list  -->
           <div id="users"></div>
-
         </div>
       </div>
 
-      <div class="col">
+      <div class="fl-r">
         <div>
 
-          <p class="fs-1_2em mb-2">Chat</p>
+          <!-- <p class="fs-1_2em mb-2">Chat</p> -->
 
-          <!-- chat messages -->
-          <div id="chat"></div>
+          <div id="chat">
+            <p class="fs-08em text-muted mb-2"><em>Welcome to the chat room.</em></p>
+          </div>
 
           <form id="messageForm">
-            <div class="form-group mb-2">
+            <div class="form-group mb-0">
               <textarea class="form-control" rows="4" id="message" placeholder="Enter Message"></textarea>
             </div>
             <input type="submit" class="btn btn-sm btn-custom-primary" value="Submit">
           </form>
 
-        </div>
 
+        </div>
       </div>
     </div>
 
@@ -67,16 +66,20 @@
         message = $(`#message`),
         chat = $(`#chat`)
 
+      // message submit
       $(`#messageForm`).submit(function(e){
         e.preventDefault();
         socket.emit('mess:send', message.val().replace(/</g, "&lt;").replace(/>/g, "&gt;"))
         message.val('')
       })
 
+      // chat area update
       socket.on('mess:new', function(data){
         chat.append(`<p class="fs-09em mb-2"><span class="fw-600">${data.user} : </span>${data.msg}</p>`)
+        chat.scrollTop(chat.height())
       })
 
+      // user login
       $(`#userForm`).submit(function(e){
         e.preventDefault();
         socket.emit('user:new', username.val().replace(/</g, "&lt;").replace(/>/g, "&gt;"))
@@ -85,10 +88,11 @@
         $(`#messageArea`).removeAttr('hidden')
       })
 
+      // users area update
       socket.on('user:get', function(data){
         $('#users').html('')
         data.forEach((user)=>{
-          $('#users').append(`<p class="fs-09em mb-2">${user}</p>`)
+          $('#users').append(`<p class="fs-09em mb-1">${user}</p>`)
         })
       })
 

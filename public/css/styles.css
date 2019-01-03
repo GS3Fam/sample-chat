@@ -7,16 +7,20 @@
   --primary-color: #12BBAD;
   --secondary-color: #7C828C;
   --background-color: #DADFE1;
+
+  --messageArea-user-width: 200px;
 }
 
 body {
   font-family: 'Poppins';
   font-weight: 300;
-  background: var(--background-color);
+  background: url("../images/img1.jpg");
+  background-size: cover;
 }
 
 * {
   border-radius: 0px !important;
+  word-wrap: break-word !important;
 }
 
 /* buttons */
@@ -29,13 +33,39 @@ body {
   cursor: pointer;
 }
 
-/*  */
+/* custom */
 
-#main-container > .row > .col {
-  padding: 0px 6px;
+#main-container {
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
-
-#main-container > .row > .col > div {
+#messageArea > div > div {
   background: white;
   padding: 15px;
+  position: relative;
+
+}
+
+#messageArea > div:nth-child(1) {
+  width: var(--messageArea-user-width);
+  margin-right: 10px;
+}
+
+#messageArea > div:nth-child(2) {
+  width: calc(100% - (var(--messageArea-user-width) + 10px));
+}
+#messageArea > div:nth-child(2) > div {
+  height: calc(100vh - 50px);
+}
+#messageArea #messageForm {
+  position: absolute;
+  bottom: 15px;
+  width: calc(100% - 30px);
+}
+#messageArea #messageForm textarea{
+  margin-bottom: 12px;
+}
+#messageArea #chat {
+  overflow-y: auto;
+  height: calc(100% - 170px);
 }
