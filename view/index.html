@@ -39,12 +39,11 @@
             <p class="fs-08em text-muted mb-2"><em>Welcome to the chat room. </em></p>
           </div>
 
-          <form id="messageForm">
+          <form id="messageForm" enctype="multipart/form-data">
             <div id="emojis" class="mb-1"></div>
-            <textarea class="form-control" rows="4" id="message" placeholder="Enter Message"></textarea>
+            <textarea class="form-control" rows="4" id="message" placeholder="Enter Message" x-webkit-speech></textarea>
             <input type="submit" class="btn btn-sm btn-custom-primary fl-r" value="Submit">
           </form>
-
 
         </div>
       </div>
@@ -54,6 +53,7 @@
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="js/socketio-file-upload/client.js"></script>
   <script src="js/emojis.js"></script>
   <script type="text/javascript">
     $(() => {
@@ -90,7 +90,6 @@
         $(`#messageArea`).removeAttr('hidden')
 
         chat.css('height', `calc(100% - ${$(`#messageForm`).height()+10}px)`)
-        console.log($(`#messageForm`).height())
       })
 
       // users area update
@@ -114,7 +113,8 @@
         message.val(message.val() + $(this).text())
       })
 
-
+      // var uploader = new SocketIOFileUpload(socket);
+      // uploader.listenOnInput(document.getElementById('siofu_input'));
 
     })
   </script>
