@@ -4,7 +4,6 @@ const
   server = require("http").createServer(app),
   io = require("socket.io").listen(server),
   path = require('path');
-  // siofu = require("socketio-file-upload");
 
 let
   users = [],
@@ -14,17 +13,12 @@ server.listen(process.env.PORT || 3000)
 console.log('Connected to Server')
 
 app.use(express.static(__dirname + '/public'));
-// app.use(siofu.router)
 
 app.get('/', (req, res)=>{
   res.sendFile(`${__dirname}/view/index.html`)
 })
 
 io.sockets.on('connection', function(socket){
-  // var uploader = new siofu();
-  //   uploader.dir = "./public/images";
-  //   uploader.listen(socket);
-
   connections.push(socket);
   console.log(`!-- con: ${connections.length} sockets connected`);
 
@@ -52,6 +46,5 @@ io.sockets.on('connection', function(socket){
   function updateUsernames(){
     io.sockets.emit('user:get', users)
   }
-
 
 })

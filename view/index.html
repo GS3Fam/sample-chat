@@ -43,6 +43,7 @@
             <div id="emojis" class="mb-1"></div>
             <textarea class="form-control" rows="4" id="message" placeholder="Enter Message" x-webkit-speech></textarea>
             <input type="submit" class="btn btn-sm btn-custom-primary fl-r" value="Submit">
+            <i id="img-link" class="fas fa-link custom-primary cur-pnt"></i>
           </form>
 
         </div>
@@ -62,13 +63,21 @@
         username = $(`#username`),
         message = $(`#message`),
         chat = $(`#chat`),
-        users = $(`#users`)
+        users = $(`#users`);
 
       // message submit
       $(`#messageForm`).submit(function(e) {
         e.preventDefault();
-        socket.emit('mess:send', message.val().split("\n"))
+
+        let newMessage = message.val().split("\n").reduce((temp, mess)=>{
+          temp.push(mess.replace(/</g, "&lt;").replace(/>/g, "&gt;"))
+          return temp;
+        }, [])
+        $(`.img-link`).length ? newMessage.push(`<img src="${$(`.img-link`).val()}"/>`) : 0
+
+        socket.emit('mess:send', newMessage)
         message.val('')
+        $(`.img-link`).remove()
       })
 
       // chat area update
@@ -103,7 +112,7 @@
       message.keyup(function(e) {
         if (e.keyCode == 13) {
           if (!e.shiftKey){
-            message.val(message.val().slice(0,message.val().length-1).replace(/</g, "&lt;").replace(/>/g, "&gt;"))
+            message.val(message.val().slice(0,message.val().length-1))
             $(`#messageForm`).submit();
           }
         }
@@ -113,8 +122,11 @@
         message.val(message.val() + $(this).text())
       })
 
-      // var uploader = new SocketIOFileUpload(socket);
-      // uploader.listenOnInput(document.getElementById('siofu_input'));
+      $(`#img-link`).click(function(){
+        $(`.img-link`).length ?
+          $(`.img-link`).remove() :
+          $(this).after(`<input type="text" class="form-control img-link" placeholder="place image link" />`)
+      })
 
     })
   </script>
